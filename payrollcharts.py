@@ -270,8 +270,75 @@ ahe_df = ahe_df.sort_index(axis=1)
 #   ahe_df.to_excel(writer, sheet_name='ahe')
     
 import matplotlib.pyplot as plt
+
+emp_tabela = df.filter(like='Emp')
+for column in emp_tabela:
+    emp_tabela[str(column)+' (monthly change)'] = (emp_tabela[column] - emp_tabela[column].shift(1))
+    #emp_tabela[str(column)+' SMA3'] = (emp_tabela[column] - emp_tabela[column].shift(3))/3
+
+ahe_tabela = df.filter(like='AHE')
+for column in ahe_tabela:
+    ahe_tabela[str(column)+' MoM (%)'] = ahe_tabela[column].pct_change(periods=1)*100
+    ahe_tabela[str(column)+' YoY (%)'] = ahe_tabela[column].pct_change(periods=12)*100
+    
+    
+emp_tabela = emp_tabela[-6::]
+emp_tabela = emp_tabela.T
+emp_tabela = emp_tabela.sort_index()
+ahe_tabela = ahe_tabela[-6::]
+ahe_tabela = ahe_tabela.T
+ahe_tabela = ahe_tabela.sort_index()
+
+emp_tabela.columns = emp_tabela.columns.strftime("%b, %Y")
+emp_tabela = emp_tabela.round(2)
+emp_tabela.index = [x[4::] for x in emp_tabela.index]
+emp_tabela = emp_tabela.iloc[[0,1,3,5,11,13,15,9,21,31,33,35,37,39,41,43]]
+emp_tabela.index = [['Total Nonfarm Employees SA',
+                     'Change in Total Nonfarm',
+                     '....1: Total Private',
+                     '...........1.1: Goods',
+                     '...................1.1.1: Mining',
+                     '...................1.1.2: Construction',
+                     '...................1.1.3: Manufacturing',
+                     '...........1.2: Services',
+                     '...................1.2.1: Trade, Transportation and Utilities',
+                     '...................1.2.2: Information',
+                     '...................1.2.3: Financial Activities',
+                     '...................1.2.4: Professional and Business Services',
+                     '...................1.2.5: Education and Health Services',
+                     '...................1.2.6: Leisure and Hospitality',
+                     '...................1.2.7: Other Services',
+                     '....2: Government']]
+import dataframe_image as dfi
+emp_tabela.dfi.export('tabelaemp.png')
+
+import matplotlib.image as mpimg
+plt.close()
+plt.figure(dpi=1200)
+img = mpimg.imread('tabelaemp.png')
+imgplot = plt.imshow(img)
+plt.axis('off')
+tabelaemp = plt.gcf()
+#pp.savefig(tabela, bbox_inches='tight')
+
+ahe_tabela.columns = ahe_tabela.columns.strftime("%b, %Y")
+ahe_tabela = ahe_tabela.round(2)
+ahe_tabela.index = [x[4::] for x in ahe_tabela.index]
+ahe_tabela = ahe_tabela.iloc[[0,1,2,4,5,10,11,13,14,16,17,52,53]]
+ahe_tabela.dfi.export('tabelaahe.png')
+
+import matplotlib.image as mpimg
+plt.close()
+plt.figure(dpi=1200)
+img = mpimg.imread('tabelaahe.png')
+imgplot = plt.imshow(img)
+plt.axis('off')
+tabelaahe = plt.gcf()
+
 from matplotlib.backends.backend_pdf import PdfPages
 pp = PdfPages("L:\\Economia\\Internacional\\US\\Work\\PayrollfromBLSapi\\Employment, Hours and Earnings.pdf") 
+
+pp.savefig(tabelaemp, bbox_inches='tight',dpi=1200)
 
 for i in range(0,44,2):
     plt.close()
@@ -288,6 +355,8 @@ for i in range(0,44,2):
     #plt.xticks(rotation=45)
     plot2=plt.gcf()
     pp.savefig(plot2, bbox_inches='tight')
+    
+pp.savefig(tabelaahe, bbox_inches='tight',dpi=1200)
 
 for i in range(0,57,3):
     plt.close()

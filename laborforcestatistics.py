@@ -131,6 +131,37 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 pp = PdfPages("L:\\Economia\\Internacional\\US\\Work\\PayrollfromBLSapi\\Labor Force Statistics.pdf")
 
+dftabela = lfs_df[-6::]
+dftabela = dftabela.T
+dftabela.columns =dftabela.columns.strftime("%b, %Y")
+dftabela.index = [x[3::] for x in dftabela.index]
+dftabela = dftabela.drop(dftabela.index[[3, 5]], axis=0)
+dftabela.index = [['Unemployment Rate, SA',
+                   'Unemployment Rate, NSA',
+                   'Labor Force Participation (%)',
+                   'Employment-Population Ratio',
+                   '.....1.1: Unemployment Rate: White',
+                   '.....1.2: Unemployment Rate: Black or African American',
+                   '.....1.3: Unemployment Rate: Hispanic or Latino',
+                   '.....1.4: Unemployment Rate: Asian',
+                   
+                   '.....2.1: Unemployment Rate: Less than a High School Diploma',
+                   '.....2.2: Unemployment Rate: High School Graduates',
+                   '.....2.3: Unemployment Rate: Some College or Associate Degree',
+                   r'''.....2.4: Unemployment Rate: Bachelor's degree and higher''',
+                   ]]
+import dataframe_image as dfi
+dftabela.dfi.export('tabela.png')
+
+import matplotlib.image as mpimg
+plt.close()
+plt.figure(dpi=1200)
+img = mpimg.imread('tabela.png')
+imgplot = plt.imshow(img)
+plt.axis('off')
+tabela = plt.gcf()
+pp.savefig(tabela, bbox_inches='tight')
+
 for i in range(0,6,2):
     plt.close()
     plt.rcParams.update(plt.rcParamsDefault)
