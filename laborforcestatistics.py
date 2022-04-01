@@ -65,7 +65,7 @@ p = requests.post(
     '{}{}'.format(url, key),
     headers=headers,
     data=data,
-    verify=False).json()['Results']['series']
+    verify=True).json()['Results']['series']
 
 # Date index from first series
 date_list = [f"{i['year']}-{i['period'][1:]}-01" for i in p[0]['data']]
@@ -107,7 +107,7 @@ p = requests.post(
     '{}{}'.format(url, key),
     headers=headers,
     data=data,
-    verify=False).json()['Results']['series']
+    verify=True).json()['Results']['series']
 
 # Date index from first series
 date_list = [f"{i['year']}-{i['period'][1:]}-01" for i in p[0]['data']]
@@ -129,7 +129,7 @@ lfs_df = lfs_df.sort_index()
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
-pp = PdfPages("L:\\Economia\\Internacional\\US\\Work\\PayrollfromBLSapi\\Labor Force Statistics.pdf")
+pp = PdfPages("Labor Force Statistics.pdf")
 
 dftabela = lfs_df[-6::]
 dftabela = dftabela.T

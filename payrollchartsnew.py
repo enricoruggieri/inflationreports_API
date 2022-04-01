@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 """
+Created on Fri Apr  1 09:02:20 2022
+
+@author: erugg
+"""
+
+
+# -*- coding: utf-8 -*-
+"""
 Created on Thu Mar  3 08:45:35 2022
 
 @author: enrico.ruggieri
@@ -54,11 +62,14 @@ series_dict = {
     "CES6500000001": "19: Education and health services Emp.",
     "CES7000000001": "20: Leisure and hospitality Emp.",
     "CES8000000001": "21: Other services Emp.",
-    "CES9000000001": "22: Government Emp."
+    "CES9000000001": "22: Government Emp.",
+    "CES0500000008": "02: Total Private Production and Nonsupervisory Employee AHE SA"
     }
 
+
+#Precisa adicionar CES05000000008
 series_dict2 = {
-    "CES0500000008": "02: Total Private AHE SA",
+    "CES0500000003": "01: Total Private AHE SA",
     "CES0600000008": "03: Goods-producing AHE SA",
     "CES0800000008": "05: Private service-providing AHE SA",
     
@@ -323,7 +334,36 @@ tabelaemp = plt.gcf()
 ahe_tabela.columns = ahe_tabela.columns.strftime("%b, %Y")
 ahe_tabela = ahe_tabela.round(2)
 ahe_tabela.index = [x[4::] for x in ahe_tabela.index]
-ahe_tabela = ahe_tabela.iloc[[0,1,2,4,5,10,11,13,14,16,17,52,53]]
+ahe_tabela = ahe_tabela.iloc[[0,1,2,3,4,5,7,8,13,14,16,17,19,20,10,11,
+                              28,29,43,44,46,47,49,50,52,53,55,56]]
+ahe_tabela.index = [['....1a: Total Private AHE SA',
+                     '....1a: Total Private AHE MoM (%)',
+                     '....1a: Total Private AHE YoY (%)',
+                     '....1b: Total Private Production and Nonsupervisory AHE SA',
+                     '....1b: Total Private Production and Nonsupervisory AHE MoM (%)',
+                     '....1b: Total Private Production and Nonsupervisory AHE YoY (%)',
+                     '...........1.1: Goods AHE MoM (%)',
+                     '...........1.1: Goods AHE YoY (%)',
+                     '......................1.1.1: Mining AHE MoM  (%)',
+                     '......................1.1.1: Mining AHE YoY  (%)',
+                     '......................1.1.2: Construction AHE MoM  (%)',
+                     '......................1.1.2: Construction AHE YoY  (%)',
+                     '......................1.1.3: Manufacturing AHE MoM  (%)',
+                     '......................1.1.3: Manufacturing AHE YoY  (%)',
+                     '...........1.2: Services AHE MoM (%)',
+                     '...........1.2: Services AHE YoY (%)',
+                     '......................1.2.1: Trade, Transportation and Utilities AHE MoM (%)',
+                     '......................1.2.1: Trade, Transportation and Utilities AHE YoY (%)',
+                     '......................1.2.2: Information AHE MoM (%)',
+                     '......................1.2.2: Information AHE YoY (%)',
+                     '......................1.2.3: Financial Activities AHE MoM (%)',
+                     '......................1.2.3: Financial Activities AHE YoY (%)',
+                     '......................1.2.4: Professional and Business Services AHE MoM (%)',
+                     '......................1.2.4: Professional and Business Services AHE YoY (%)',
+                     '......................1.2.5: Education and Health Services AHE MoM (%)',
+                     '......................1.2.5: Education and Health Services AHE YoY (%)',
+                     '......................1.2.6: Leisure and Hospitality AHE MoM (%)',
+                     '......................1.2.6: Leisure and Hospitality AHE YoY (%)']]
 ahe_tabela.dfi.export('tabelaahe.png')
 
 import matplotlib.image as mpimg
@@ -357,7 +397,7 @@ for i in range(0,44,2):
     
 pp.savefig(tabelaahe, bbox_inches='tight',dpi=1200)
 
-for i in range(0,57,3):
+for i in range(0,60,3):
     plt.close()
     plt.rcParams.update(plt.rcParamsDefault)
     plt.style.use('ggplot')
@@ -387,3 +427,5 @@ plot4 = plt.gcf()
 pp.savefig(plot4, bbox_inches='tight')
 
 pp.close()
+
+
