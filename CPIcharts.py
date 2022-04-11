@@ -102,8 +102,8 @@ series_dict2 = {
     "CUSR0000SEHC": "30: Owners' equivalent rent of residences",
     "CUSR0000SAM2": "31: Medical care services",
     "CUSR0000SEMC01": "32: Physicians' services",
-    "CUSR0000SAS4": "33: Hospital services",
-    "CUSR0000SEMD01": "34: Transportation services",
+    "CUSR0000SEMD01": "33: Hospital services",
+    "CUSR0000SAS4": "34: Transportation services",
     "CUSR0000SETD": "35: Motor vehicle maintenance and repair",
     "CUSR0000SETE": "36: Motor vehicle insurance",
     "CUSR0000SETG01": "37: Airline fares"
@@ -285,6 +285,121 @@ df2 = df2.sort_index(axis=1)
 df3= df2
 df3.columns = df3.columns.str.strip()
 df3 = df3.sort_index(axis=1)
+
+df_tabela = df3.iloc[-6:,]
+df_tabela = df_tabela.T
+lista_1 = [0] + list(range(1,111,3))
+lista_2 = [0] + list(range(2,111,3))
+tabela_mom = df_tabela.iloc[lista_1,]
+tabela_yoy = df_tabela.iloc[lista_2,]
+tabela_resumo = df_tabela.iloc[[1,2,4,5,31,32,55,56]]
+tabela_mom.index = ["CPI All Items Index SA",
+                    "CPI All Items SA MoM (%)",
+                    "..1: Food MoM (%)",
+                    ".............Food at home",
+                    "........................Cereals and Bakery Products",
+                    "........................Meats, poultry, fish and eggs",
+                    "........................Dairy and related products",
+                    "........................Fruits and vegetables",
+                    "........................Nonalcoholic beverages and beverage materials",
+                    "........................Other food at home",
+                    ".............Food away from home",
+                    "..2: Energy MoM (%)",
+                    ".............Energy Commodities",
+                    "........................Fuel oil",
+                    "........................Motor fuel",
+                    "................................Gasoline (all types)",
+                    ".............Energy Services",
+                    "........................Electricity",
+                    "........................Utility (piped) gas service",
+                    "..3: Core CPI MoM (%)",
+                    ".............Commodities Ex-Food and Energy",
+                    "........................Apparel",
+                    "........................New Vehicles",
+                    "........................Used cars and trucks",
+                    "........................Medical care commodities",
+                    "........................Alcoholic beverages",
+                    "........................Tobacco and smoking products",
+                    ".............Services Ex-Energy",
+                    "........................Shelter",
+                    "................................Rent of primary residence",
+                    "................................Owners' equivalent rent",
+                    "........................Medical care services",
+                    "................................Physicians' services",
+                    "................................Hospital services",
+                    "........................Transportation services",
+                    "................................Motor vehicle maintenance and repair",
+                    "................................Motor vehicle insurance",
+                    "................................Airline fares"
+                    ]
+tabela_mom.index.name = "Consumer Price Index, by detailed expenditure, MoM (%)"
+tabela_mom = tabela_mom.round(2)
+tabela_mom.columns =tabela_mom.columns.strftime("%b, %Y")
+#tabela_mom = tabela_mom.style.set_caption("Consumer Price Index, by detailed expenditure, MoM (%)")
+import dataframe_image as dfi
+dfi.export(tabela_mom,"tabela_mom.png")
+
+tabela_yoy.index = ["CPI All Items Index SA",
+                    "CPI All Items SA YoY (%)",
+                    "..1: Food YoY (%)",
+                    ".............Food at home",
+                    "........................Cereals and Bakery Products",
+                    "........................Meats, poultry, fish and eggs",
+                    "........................Dairy and related products",
+                    "........................Fruits and vegetables",
+                    "........................Nonalcoholic beverages and beverage materials",
+                    "........................Other food at home",
+                    ".............Food away from home",
+                    "..2: Energy YoY (%)",
+                    ".............Energy Commodities",
+                    "........................Fuel oil",
+                    "........................Motor fuel",
+                    "................................Gasoline (all types)",
+                    ".............Energy Services",
+                    "........................Electricity",
+                    "........................Utility (piped) gas service",
+                    "..3: Core CPI YoY (%)",
+                    ".............Commodities Ex-Food and Energy",
+                    "........................Apparel",
+                    "........................New Vehicles",
+                    "........................Used cars and trucks",
+                    "........................Medical care commodities",
+                    "........................Alcoholic beverages",
+                    "........................Tobacco and smoking products",
+                    ".............Services Ex-Energy",
+                    "........................Shelter",
+                    "................................Rent of primary residence",
+                    "................................Owners' equivalent rent",
+                    "........................Medical care services",
+                    "................................Physicians' services",
+                    "................................Hospital services",
+                    "........................Transportation services",
+                    "................................Motor vehicle maintenance and repair",
+                    "................................Motor vehicle insurance",
+                    "................................Airline fares"
+                    ]
+tabela_yoy.index.name = "Consumer Price Index, by detailed expenditure, YoY (%)"
+tabela_yoy = tabela_yoy.round(2)
+tabela_yoy.columns =tabela_yoy.columns.strftime("%b, %Y")
+#tabela_mom = tabela_mom.style.set_caption("Consumer Price Index, by detailed expenditure, MoM (%)")
+import dataframe_image as dfi
+dfi.export(tabela_yoy,"tabela_yoy.png")
+
+tabela_resumo.index = ["CPI Headline MoM (%)",
+                       "CPI Headline YoY (%)",
+                       "........Food MoM (%)",
+                       "........Food YoY (%)",
+                       "........Energy MoM (%)",
+                       "........Energy YoY (%)",
+                       "Core CPI MoM (%)",
+                       "Core CPI YoY (%)"]
+tabela_resumo.index.name = "Consumer Price Index, USA"
+tabela_resumo = tabela_resumo.round(2)
+tabela_resumo.columns = tabela_resumo.columns.strftime("%b, %Y")
+#tabela_mom = tabela_mom.style.set_caption("Consumer Price Index, by detailed expenditure, MoM (%)")
+import dataframe_image as dfi
+dfi.export(tabela_resumo,"tabela_resumo.png")
+
 import matplotlib.pyplot as plt
 
 plt.rcParams.update(plt.rcParamsDefault)
@@ -292,6 +407,32 @@ plt.style.use('ggplot')
 
 from matplotlib.backends.backend_pdf import PdfPages
 pp = PdfPages("L:\\Economia\\Internacional\\US\\Inflacao\\blsAPI\\CPIcharts.pdf")
+
+import matplotlib.image as mpimg
+
+plt.close()
+plt.figure(dpi=1200)
+img = mpimg.imread('tabela_resumo.png')
+imgplot = plt.imshow(img)
+plt.axis('off')
+tabelaresumo = plt.gcf()
+pp.savefig(tabelaresumo, bbox_inches='tight')
+
+plt.close()
+plt.figure(dpi=1200)
+img = mpimg.imread('tabela_mom.png')
+imgplot = plt.imshow(img)
+plt.axis('off')
+tabela1 = plt.gcf()
+pp.savefig(tabela1, bbox_inches='tight')
+
+plt.close()
+plt.figure(dpi=1200)
+img = mpimg.imread('tabela_yoy.png')
+imgplot = plt.imshow(img)
+plt.axis('off')
+tabela2 = plt.gcf()
+pp.savefig(tabela2, bbox_inches='tight')
 
 for i in range(0,111,3):
     plt.close()
@@ -317,7 +458,11 @@ for i in range(0,111,3):
     plot2=plt.gcf()
     pp.savefig(plot2, bbox_inches='tight')
     
+    
 pp.close()
+
+
+
 
 """
 TEM QUE VER SE VALE A PENA CONTINUAR ESSA PARTE DO CÓDIGO
